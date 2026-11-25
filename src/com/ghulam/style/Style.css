@@ -22,17 +22,17 @@
 }
 
 .button:hover {
-  -fx-cursor: hand;
+  -fx-cursor: pointer;
 }
 /* Login css styling start here */
 .loginButton {
-  -fx-border-color: -fx-secondary;
+  -fx-border-color: #8e24aa;
   -fx-border-radius: 20px;
   -fx-background-radius: 20px;
 }
 
 .loginButton:hover {
-  -fx-border-color: -fx-yellow;
+  -fx-border-color: #ffff00;
   -fx-border-radius: 20px;
   -fx-background-radius: 20px;
 }
