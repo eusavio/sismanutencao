@@ -146,9 +146,9 @@
   -fx-text-fill: white;
   -fx-font-size: 14px;
   -fx-pref-height: 26;
-  -fx-max-height: 26;
-  -fx-min-width: 64;
-  -fx-padding: 8;
+  -fx-max-height: 26px;
+  -fx-min-width: 64px;
+  -fx-padding: 8px;
 }
 .allButtons:hover {
   -fx-background-color: #1565c0;
