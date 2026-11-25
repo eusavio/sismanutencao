@@ -278,8 +278,6 @@
     16px 16px 0 0,
     0 0 0 0,
     0 0 0 0;
-  -fx-border-radius:
-    16px 16px 0 0,
-    0 0 0 0;
+  -fx-border-radius: 16px 16px 0 0;
 }
 /* Tab Style codding end here*/
