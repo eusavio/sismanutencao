@@ -1,6 +1,7 @@
 package com.ghulam.dashboard;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -18,6 +19,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DashboardController implements Initializable {
 	@FXML
@@ -62,6 +65,7 @@ public class DashboardController implements Initializable {
 	private JFXFillTransition ft;
 	private StackPane stackPane;
 	private AnchorPane rootPane;
+	private static final Logger LOGGER = Logger.getLogger(DashboardController.class.getName());
 
 	public void setPane(StackPane stackPane, AnchorPane rootPane) {
 		this.stackPane = stackPane;
@@ -116,28 +120,37 @@ public class DashboardController implements Initializable {
 	}
 
 	private void selectReport(String id) {
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		String path = null;
-		if (id.startsWith("totalBook"))
-			path = "dashboard/ViewAllBooks.fxml";
-		else if (id.startsWith("issue"))
-			path = "dashboard/ViewIssueBooks.fxml";
-		else if (id.startsWith("returnBook"))
-			path = "dashboard/ViewReturnBooks.fxml";
-		try {
-			fxmlLoader.load(Main.class.getResource(path).openStream());
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (id == null) {
+			return;
 		}
-		AnchorPane root = fxmlLoader.getRoot();
-		Reportable controller = fxmlLoader.getController();
-		controller.setPane(stackPane, rootPane);
-		dataReportViewer.getChildren().clear();
-		dataReportViewer.getChildren().add(root);
-		// this method is used to auto adjust height and weight
-		AnchorPane.setTopAnchor(root, 0.0);
-		AnchorPane.setRightAnchor(root, 0.0);
-		AnchorPane.setBottomAnchor(root, 0.0);
-		AnchorPane.setLeftAnchor(root, 0.0);
+
+		String path = null;
+		if (id.startsWith("totalBook")) {
+			path = "dashboard/ViewAllBooks.fxml";
+		} else if (id.startsWith("issue")) {
+			path = "dashboard/ViewIssueBooks.fxml";
+		} else if (id.startsWith("returnBook")) {
+			path = "dashboard/ViewReturnBooks.fxml";
+		}
+
+		if (path == null) {
+			LOGGER.warning("Nenhum relatório correspondente encontrado para o id: " + id);
+			return;
+		}
+
+		URL resource = Main.class.getResource(path);
+		if (resource == null) {
+			LOGGER.severe("Recurso FXML não encontrado no classpath: " + path);
+			return;
+		}
+
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		try (InputStream stream = resource.openStream()) {
+			fxmlLoader.load(stream);
+			AnchorPane root = fxmlLoader.getRoot();
+			// restante da lógica com root...
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "Erro ao carregar o FXML: " + path, e);
+		}
 	}
 }

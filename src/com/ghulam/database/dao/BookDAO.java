@@ -5,6 +5,8 @@ import com.ghulam.database.table.Book;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BookDAO {
     // query
@@ -22,6 +24,10 @@ public class BookDAO {
     private ResultSet resultSet=null;
     private Book book;
     // method
+
+    //resolvendo issue 3 taina
+    private static final Logger LOGGER = Logger.getLogger(BookDAO.class.getName());
+
     public BookDAO() {
         conn = Database.getConnection();
     }
@@ -81,21 +87,33 @@ public class BookDAO {
         }
         return 0;
     }
+
+    //resolvendo issue 3 taina
     public int deleteBook(int... id) {
-        try {
-            StringBuilder deleteQuery = new StringBuilder(DELETE_BOOK);
-            for (int i = 0; i < id.length; i++) {
-                deleteQuery.append(id[i]);
-                if (i != id.length - 1) deleteQuery.append(",");
+        if (id == null || id.length == 0) {
+            return 0;
+        }
+
+        StringBuilder deleteQuery = new StringBuilder(DELETE_BOOK);
+        for (int i = 0; i < id.length; i++) {
+            deleteQuery.append("?");
+            if (i != id.length - 1) {
+                deleteQuery.append(",");
             }
-            deleteQuery.append(")");
-            pStatement = conn.prepareStatement(deleteQuery.toString());
-            return pStatement.executeUpdate();
+        }
+        deleteQuery.append(")");
+
+        try (PreparedStatement ps = conn.prepareStatement(deleteQuery.toString())) {
+            for (int i = 0; i < id.length; i++) {
+                ps.setInt(i + 1, id[i]);
+            }
+            return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao excluir livro(s)", e);
         }
         return 0;
     }
+
     public ArrayList<Book> getBooksArrayList() {
         ArrayList<Book> booksList = new ArrayList<>();
         resultSet = getBooksResultSet();

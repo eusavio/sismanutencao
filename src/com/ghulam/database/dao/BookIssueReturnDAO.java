@@ -5,6 +5,8 @@ import com.ghulam.database.table.BookIssueReturn;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BookIssueReturnDAO {
     // query
@@ -23,6 +25,9 @@ public class BookIssueReturnDAO {
     private ResultSet resultSet=null;
     private BookIssueReturn bookIssueReturn;
     // method
+      //resolvendo issue 2 taina
+    private static final Logger LOGGER = Logger.getLogger(BookIssueReturnDAO.class.getName());
+
     public BookIssueReturnDAO() {
         conn = Database.getConnection();
     }
@@ -78,20 +83,24 @@ public class BookIssueReturnDAO {
         }
         return 0;
     }
-    public boolean isBookIssued(int studentId,int bookId){
+    
+    //resolvendo issue 2 taina
+    public boolean isBookIssued(int studentId, int bookId) {
         try {
-            pStatement=conn.prepareStatement(CHECK_ISSUE_BOOK_DETAIL);
-            pStatement.setInt(1,bookId);
-            pStatement.setInt(2,studentId);
-            resultSet=pStatement.executeQuery();
-            if(resultSet.next()){
+            pStatement = conn.prepareStatement(CHECK_ISSUE_BOOK_DETAIL);
+            pStatement.setInt(1, bookId);
+            pStatement.setInt(2, studentId);
+            resultSet = pStatement.executeQuery();
+            if (resultSet.next()) {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao verificar se o livro foi emprestado", e);
         }
         return false;
     }
+
+    
     public ArrayList<BookIssueReturn> getBooksArrayList() {
         ArrayList<BookIssueReturn> bookIssueReturnsList = new ArrayList<>();
         resultSet = getBooksResultSet();
