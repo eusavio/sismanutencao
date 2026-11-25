@@ -267,9 +267,7 @@
     16px 16px 16px 16px,
     0 0 0 0,
     0 0 0 0;
-  -fx-border-radius:
-    16px 16px 16px 16px,
-    0 0 0 0;
+  -fx-border-radius: 16px 16px 16px 16px;
 }
 .tab:hover {
   -fx-cursor: hand;
