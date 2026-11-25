@@ -258,16 +258,20 @@ public class BookIssueReturnController implements Initializable {
         if (!txtBookIssueId.getSelectionModel().isEmpty()) {
             bookIssueReturn = bookIssueReturnDAO.getData(txtBookIssueId.getSelectionModel().getSelectedItem());
             if (bookIssueReturn != null) {
-                lblRIssueDate.setText(df.format(bookIssueReturn.getIssueDate()));
-                lblRRetrunDate.setText(df.format(new Date()));
-
                 //retrieve Book Data.
                 book = bookDAO.getBook(bookIssueReturn.getBookId());
+                //retrieve Student Data.
+                student = studentDAO.getStudent(bookIssueReturn.getStudentId());
+                if (book == null || student == null) {
+                    MaterialDialog.DialogOK(stackPane, "Data not found.", rootPane);
+                    return;
+                }
+
+                lblRIssueDate.setText(df.format(bookIssueReturn.getIssueDate()));
+                lblRRetrunDate.setText(df.format(new Date()));
                 lblRBookId.setText(String.valueOf(book.getId()));
                 lblRBookName.setText(book.getName());
                 lblRBookAuthor.setText(book.getAuthorName());
-                //retrieve Student Data.
-                student = studentDAO.getStudent(bookIssueReturn.getStudentId());
                 lblRStudentId.setText(String.valueOf(student.getStudentID()));
                 lblRStudentName.setText(student.getName());
                 lblRRoll.setText(String.valueOf(student.getRoll()));

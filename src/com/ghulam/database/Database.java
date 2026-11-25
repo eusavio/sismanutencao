@@ -34,7 +34,7 @@ public class Database {
             Class.forName("com.mysql.cj.jdbc.Driver");
             // Conecta ao schema 'library' usando o usuário root
             String url = "jdbc:mysql://localhost:3306/library?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true";
-            conn = DriverManager.getConnection(url, "root", "passtest1");
+            conn = DriverManager.getConnection(url, "root", "root");
             return conn;
         } catch (Exception e) {
             if (alert == null) {
