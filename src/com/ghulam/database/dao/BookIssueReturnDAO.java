@@ -28,58 +28,69 @@ public class BookIssueReturnDAO {
       //resolvendo issue 2 taina
     private static final Logger LOGGER = Logger.getLogger(BookIssueReturnDAO.class.getName());
 
+
     public BookIssueReturnDAO() {
         conn = Database.getConnection();
     }
-    public BookIssueReturn getData(int id){
-        bookIssueReturn=null;
+
+    //issue 5
+    public BookIssueReturn getData(int id) {
+        bookIssueReturn = null;
         try {
-            pStatement=conn.prepareStatement(DISPLAY_ISSUE_DETAIL);
-            pStatement.setInt(1,id);
-            resultSet=pStatement.executeQuery();
-            if(resultSet.next()){
-                bookIssueReturn=new BookIssueReturn(resultSet.getInt("ISSUE_ID"),
-                        resultSet.getInt("BOOK_ID"),
-                        resultSet.getInt("STUDENT_ID"),
-                        resultSet.getDate("ISSUE_DATE"));
+            pStatement = conn.prepareStatement(DISPLAY_ISSUE_DETAIL);
+            pStatement.setInt(1, id);
+            resultSet = pStatement.executeQuery();
+            if (resultSet.next()) {
+                bookIssueReturn = new BookIssueReturn(
+                    resultSet.getInt("ISSUE_ID"),
+                    resultSet.getInt("BOOK_ID"),
+                    resultSet.getInt("STUDENT_ID"),
+                    resultSet.getDate("ISSUE_DATE")
+                );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao buscar detalhes do empréstimo com id: " + id, e);
         }
         return bookIssueReturn;
     }
 
+    //issue 4 taina
     public int getLast() {
         try {
             pStatement = conn.prepareStatement(LAST_ISSUE_ID);
             resultSet = pStatement.executeQuery();
-            if(resultSet.next())
+            if (resultSet.next()) {
                 return resultSet.getInt("ISSUE_ID");
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao obter o último ID de empréstimo", e);
         }
         return 0;
     }
+
+    //issue 6 taina
     public int addData(BookIssueReturn bookIssueReturn) {
         try {
-            pStatement=conn.prepareStatement(INSERT_ISSUE_DETAIL);
-            pStatement.setInt(1,bookIssueReturn.getIssueId());
-            pStatement.setInt(2,bookIssueReturn.getBookId());
-            pStatement.setInt(3,bookIssueReturn.getStudentId());
-            pStatement.setDate(4,bookIssueReturn.getIssueDate());
+            pStatement = conn.prepareStatement(INSERT_ISSUE_DETAIL);
+            pStatement.setInt(1, bookIssueReturn.getIssueId());
+            pStatement.setInt(2, bookIssueReturn.getBookId());
+            pStatement.setInt(3, bookIssueReturn.getStudentId());
+            pStatement.setDate(4, bookIssueReturn.getIssueDate());
             return pStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao inserir registro de empréstimo", e);
         }
         return 0;
     }
-    public int  deleteData(int id) {
+
+    //issue  taina
+    public int deleteData(int id) {
         try {
-            pStatement=conn.prepareStatement(DELETE_ISSUE_DETAIL);
-            pStatement.setInt(1,id);
+            pStatement = conn.prepareStatement(DELETE_ISSUE_DETAIL);
+            pStatement.setInt(1, id);
             return pStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao excluir registro de empréstimo com id: " + id, e);
         }
         return 0;
     }
