@@ -3,6 +3,8 @@ package com.ghulam.menu;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.ghulam.Main;
 import com.ghulam.about.AboutController;
@@ -28,6 +30,9 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class MenuController implements Initializable {
+    
+    private static final Logger LOGGER = Logger.getLogger(MenuController.class.getName());
+
 	private final static Image DASHBOARD_BLACK = new Image(
 			Main.class.getResource("images/dashboard_black.png").toString());
 	private final static Image DASHBOARD_WHITE = new Image(
@@ -164,7 +169,7 @@ public class MenuController implements Initializable {
 		try {
 			fxmlLoader.load(Main.class.getResource(fxmlName).openStream());
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Erro ao carregar a tela: " + fxmlName, e);
 		}
 		if (controllerClass.equalsIgnoreCase("Dashboard"))
 			((DashboardController) fxmlLoader.getController()).setPane(stackRootPane, anchorPane);
@@ -208,5 +213,4 @@ public class MenuController implements Initializable {
 		else if (btnName.equalsIgnoreCase(btnAbout.getId()))
 			imgAbout.setImage(ABOUT_WHITE);
 	}
-
 }
