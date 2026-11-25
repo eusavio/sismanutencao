@@ -18,19 +18,19 @@ public class BookDAO {
     private static final String SEARCH_BOOKS = "SELECT ID,NAME,AUTHOR,DESCRIPTION,STOCK,DATE1 FROM BOOKDB WHERE ID LIKE ? OR UPPER(NAME) LIKE ? OR UPPER(AUTHOR) LIKE ? OR UPPER(DESCRIPTION) LIKE ? OR STOCK LIKE ?";
     private static final String SEARCH_BOOK = "SELECT ID,NAME,AUTHOR,DESCRIPTION,STOCK,DATE1 FROM BOOKDB WHERE ID=?";
     private static final String SEARCH_BOOKS_DATE = "SELECT ID,NAME,AUTHOR,DESCRIPTION,STOCK,DATE1 FROM BOOKDB WHERE DATE1=?";
+    private static final Logger LOGGER = Logger.getLogger(BookDAO.class.getName());
+
     // Variable
     private Connection conn = null;
     private PreparedStatement pStatement = null;
     private ResultSet resultSet=null;
     private Book book;
+
     // method
-
-    //resolvendo issue 3 taina
-    private static final Logger LOGGER = Logger.getLogger(BookDAO.class.getName());
-
     public BookDAO() {
         conn = Database.getConnection();
     }
+    
     public int addBook(Book book) {
         try {
             pStatement = conn.prepareStatement(INSERT_BOOK);
@@ -42,10 +42,11 @@ public class BookDAO {
             pStatement.setDate(6, book.getDate());
             return pStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao adicionar livro", e);
         }
         return 0;
     }
+    
     public Book getBook(int id){
         book=null;
         try {
@@ -58,10 +59,11 @@ public class BookDAO {
                         resultSet.getDate("DATE1"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao buscar livro por ID", e); 
         }
         return book;
     }
+    
     public int getLast() {
         try {
             pStatement = conn.prepareStatement(LAST_BOOK_ID);
@@ -69,10 +71,11 @@ public class BookDAO {
             if(resultSet.next())
                 return resultSet.getInt("ID");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao buscar último ID do livro", e);
         }
         return 0;
     }
+    
     public int updateBook(Book book) {
         try {
             pStatement = conn.prepareStatement(UPDATE_BOOK);
@@ -83,37 +86,27 @@ public class BookDAO {
             pStatement.setInt(5, book.getId());
             return pStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao atualizar livro", e);
         }
         return 0;
     }
-
-    //resolvendo issue 3 taina
+    
     public int deleteBook(int... id) {
-        if (id == null || id.length == 0) {
-            return 0;
-        }
-
-        StringBuilder deleteQuery = new StringBuilder(DELETE_BOOK);
-        for (int i = 0; i < id.length; i++) {
-            deleteQuery.append("?");
-            if (i != id.length - 1) {
-                deleteQuery.append(",");
-            }
-        }
-        deleteQuery.append(")");
-
-        try (PreparedStatement ps = conn.prepareStatement(deleteQuery.toString())) {
+        try {
+            StringBuilder deleteQuery = new StringBuilder(DELETE_BOOK);
             for (int i = 0; i < id.length; i++) {
-                ps.setInt(i + 1, id[i]);
+                deleteQuery.append(id[i]);
+                if (i != id.length - 1) deleteQuery.append(",");
             }
-            return ps.executeUpdate();
+            deleteQuery.append(")");
+            pStatement = conn.prepareStatement(deleteQuery.toString());
+            return pStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Erro ao excluir livro(s)", e);
+            LOGGER.log(Level.SEVERE, "Erro ao deletar livro", e); // Correção Sonar
         }
         return 0;
     }
-
+    
     public ArrayList<Book> getBooksArrayList() {
         ArrayList<Book> booksList = new ArrayList<>();
         resultSet = getBooksResultSet();
@@ -125,10 +118,11 @@ public class BookDAO {
                 booksList.add(book);
             }
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            LOGGER.log(Level.SEVERE, "Erro ao listar todos os livros", e); // Correção Sonar
         }
         return booksList;
     }
+    
     public ArrayList<Book> getBooksArrayList(String text) {
         ArrayList<Book> booksList = new ArrayList<>();
         resultSet = getBooksResultSet(text);
@@ -140,10 +134,11 @@ public class BookDAO {
                 booksList.add(book);
             }
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            LOGGER.log(Level.SEVERE, "Erro ao buscar livros por termo", e); // Correção Sonar
         }
         return booksList;
     }
+    
     public ArrayList<Book> getBooksArrayList(Date date) {
         ArrayList<Book> booksList = new ArrayList<>();
         resultSet = getBooksResultSet(date);
@@ -155,19 +150,21 @@ public class BookDAO {
                 booksList.add(book);
             }
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            LOGGER.log(Level.SEVERE, "Erro ao buscar livros por data", e); // Correção Sonar
         }
         return booksList;
     }
+    
     private ResultSet getBooksResultSet() {
         try {
             pStatement = conn.prepareStatement(DISPLAY_ALL_BOOK);
             return pStatement.executeQuery();
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            LOGGER.log(Level.SEVERE, "Erro ao obter ResultSet de livros", e); // Correção Sonar
         }
         return null;
     }
+    
     private ResultSet getBooksResultSet(String text) {
         try {
             pStatement = conn.prepareStatement(SEARCH_BOOKS);
@@ -178,19 +175,19 @@ public class BookDAO {
             pStatement.setString(5, (text + "%").toUpperCase());
             return pStatement.executeQuery();
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            LOGGER.log(Level.SEVERE, "Erro ao obter ResultSet de busca de livros", e); // Correção Sonar
         }
         return null;
     }
+    
     private ResultSet getBooksResultSet(Date date) {
         try {
             pStatement = conn.prepareStatement(SEARCH_BOOKS_DATE);
             pStatement.setDate(1,date);
             return pStatement.executeQuery();
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            LOGGER.log(Level.SEVERE, "Erro ao obter ResultSet de busca de livros por data", e); // Correção Sonar
         }
         return null;
     }
 }
-

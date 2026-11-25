@@ -31,8 +31,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;        
+import java.util.logging.Logger;       
 
 public class BookIssueReturnController implements Initializable {
+    
+    private static final Logger LOGGER = Logger.getLogger(BookIssueReturnController.class.getName());
+
     @FXML
     private Label lblDate;
     @FXML
@@ -99,6 +104,7 @@ public class BookIssueReturnController implements Initializable {
     private ObservableList<Integer> issueBookList=FXCollections.observableArrayList();
     private ArrayList<Student> selectedStudentList;
     private ArrayList<Book> selectedBookList;
+
     public void setPane(StackPane stackPane, AnchorPane rootPane) {
         this.stackPane = stackPane;
         this.rootPane = rootPane;
@@ -110,6 +116,7 @@ public class BookIssueReturnController implements Initializable {
     public static ObservableList<Student> getStudentObservableList(){
         return studentObservableList;
     }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         selectedStudentList=new ArrayList<>();
@@ -145,7 +152,7 @@ public class BookIssueReturnController implements Initializable {
             stage.centerOnScreen();
             stage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao abrir a janela de diálogo: " + str, e);
         }
     }
 
@@ -165,6 +172,7 @@ public class BookIssueReturnController implements Initializable {
         }
         lblNoOfStudent.setText("No. of Students : "+selectedStudentList.size());
     }
+    
     private void setLblNoOfBooks(){
         selectedBookList.clear(); // Clear List
         bookObservableList.sort(((o1, o2) -> {
@@ -179,6 +187,7 @@ public class BookIssueReturnController implements Initializable {
         }
         lblNoOfBooks.setText("No. of Students : "+selectedBookList.size());
     }
+    
     private void checkBookAvailability(){
         int noOfStudent=selectedStudentList.size();
         boolean available=true;
@@ -194,18 +203,21 @@ public class BookIssueReturnController implements Initializable {
            lblBookAvailable.setText(outOfStock);
 
     }
+    
     @FXML
     void btnAddStudentOnAction(ActionEvent event) {
         openDialogSatge("studentList.fxml");
         setLblNoOfStudent();
         checkBookAvailability();
     }
+    
     @FXML
     void btnAddBookOnAction(ActionEvent event) {
         openDialogSatge("bookList.fxml");
         setLblNoOfBooks();
         checkBookAvailability();
     }
+    
     private void generateIssueId() {
          lblIssueID.setText(String.valueOf(bookIssueReturnDAO.getLast() + 1));
     }
@@ -233,6 +245,7 @@ public class BookIssueReturnController implements Initializable {
             MaterialDialog.DialogOK(stackPane,"Book not available!!! Please try another book",rootPane);
         }
     }
+    
     @FXML
     void btnRefreshOnAction(ActionEvent event) {
         generateIssueId();
@@ -251,27 +264,22 @@ public class BookIssueReturnController implements Initializable {
 
     //Return Book coding start here
 
-
     @FXML
     void txtBookIssueIdOnAction(ActionEvent event) {
 
         if (!txtBookIssueId.getSelectionModel().isEmpty()) {
             bookIssueReturn = bookIssueReturnDAO.getData(txtBookIssueId.getSelectionModel().getSelectedItem());
             if (bookIssueReturn != null) {
-                //retrieve Book Data.
-                book = bookDAO.getBook(bookIssueReturn.getBookId());
-                //retrieve Student Data.
-                student = studentDAO.getStudent(bookIssueReturn.getStudentId());
-                if (book == null || student == null) {
-                    MaterialDialog.DialogOK(stackPane, "Data not found.", rootPane);
-                    return;
-                }
-
                 lblRIssueDate.setText(df.format(bookIssueReturn.getIssueDate()));
                 lblRRetrunDate.setText(df.format(new Date()));
+
+                //retrieve Book Data.
+                book = bookDAO.getBook(bookIssueReturn.getBookId());
                 lblRBookId.setText(String.valueOf(book.getId()));
                 lblRBookName.setText(book.getName());
                 lblRBookAuthor.setText(book.getAuthorName());
+                //retrieve Student Data.
+                student = studentDAO.getStudent(bookIssueReturn.getStudentId());
                 lblRStudentId.setText(String.valueOf(student.getStudentID()));
                 lblRStudentName.setText(student.getName());
                 lblRRoll.setText(String.valueOf(student.getRoll()));
@@ -336,5 +344,5 @@ public class BookIssueReturnController implements Initializable {
             return false;
         return true;
     }
-    // Return book coding end here
+
 }
