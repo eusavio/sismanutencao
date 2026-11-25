@@ -1,5 +1,5 @@
 package com.ghulam.bookinfo;
-
+ 
 import com.ghulam.alert.MaterialDialog;
 import com.ghulam.database.dao.BookDAO;
 import com.ghulam.database.table.Book;
@@ -16,50 +16,72 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-
+ 
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
-
+import java.util.stream.Collectors;
+ 
 public class BookInfoController implements Initializable {
     @FXML
     private JFXTextField txtSearch;
-
+ 
     @FXML
     private JFXButton btnSearch;
-
+ 
     @FXML
     private JFXButton btnRefresh;
     @FXML
     private JFXTextField txtBookId;
-
+ 
     @FXML
     private JFXTextField txtBookName;
-
+ 
     @FXML
     private JFXTextField txtAuthorName;
-
+ 
     @FXML
     private JFXTextField txtStocks;
-
+ 
+    // NOVO: campos de gênero e tags no cadastro
+    @FXML
+    private JFXTextField txtGenre;
+ 
+    @FXML
+    private JFXTextField txtTags;
+ 
     @FXML
     private JFXTextArea txtDescription;
-
+ 
     @FXML
     private JFXButton btnAdd;
-
+ 
     @FXML
     private JFXButton btnUpdate;
-
+ 
     @FXML
     private JFXButton btnDelete;
-
+ 
+    // NOVO: filtros
+    @FXML
+    private JFXComboBox<String> cbFilterAuthor;
+ 
+    @FXML
+    private JFXComboBox<String> cbFilterGenre;
+ 
+    @FXML
+    private JFXComboBox<String> cbFilterTag;
+ 
+    @FXML
+    private JFXButton btnClearFilters;
+ 
     @FXML
     private TableView<Book> table;
-
+ 
     @FXML
     private TableColumn<Book, Integer> idCol;
     @FXML
@@ -70,17 +92,24 @@ public class BookInfoController implements Initializable {
     private TableColumn<Book, String> descriptionCol;
     @FXML
     private TableColumn<Book, Integer> stockCol;
+    // NOVO: colunas de gênero e tags na tabela
+    @FXML
+    private TableColumn<Book, String> genreCol;
+    @FXML
+    private TableColumn<Book, String> tagsCol;
     private Book book;
     private BookDAO bookDAO;
     private StackPane stackPane;
     private AnchorPane rootPane;
     private ObservableList<Book> list = FXCollections.observableArrayList();
-
+    // NOVO: evita disparar o filtro enquanto os combos estão sendo recarregados
+    private boolean updatingFilters = false;
+ 
     public void setPane(StackPane stackPane, AnchorPane rootPane) {
         this.stackPane = stackPane;
         this.rootPane = rootPane;
     }
-
+ 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bookDAO = new BookDAO();
@@ -109,29 +138,34 @@ public class BookInfoController implements Initializable {
                 isNumeric.set(false);
         }));
     }
-
+ 
     private void generateBookId() {
         txtBookId.setText(String.valueOf(bookDAO.getLast() + 1));
     }
-
+ 
     private void loadData() {
         list.clear();
         list.addAll(bookDAO.getBooksArrayList());
         table.setItems(list);
+        refreshFilterOptions(); // NOVO: recarrega os combos e limpa os filtros
     }
-
+ 
     private void iniCol() {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         bookNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorCol.setCellValueFactory(new PropertyValueFactory<>("authorName"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        tagsCol.setCellValueFactory(new PropertyValueFactory<>("tags"));
     }
-
+ 
     private void disableTextFields(boolean aFlag){
         txtBookName.setDisable(aFlag);
         txtAuthorName.setDisable(aFlag);
         txtStocks.setDisable(aFlag);
+        txtGenre.setDisable(aFlag);
+        txtTags.setDisable(aFlag);
         txtDescription.setDisable(aFlag);
     }
     private void changeButtonText(JFXButton btn) {
@@ -154,7 +188,7 @@ public class BookInfoController implements Initializable {
         book = table.getSelectionModel().getSelectedItem();
         retriveObjectData();
     }
-
+ 
     @FXML
     void btnAddOnAction(ActionEvent event) {
         if (btnAdd.getText().equalsIgnoreCase("Add New")) {
@@ -171,7 +205,7 @@ public class BookInfoController implements Initializable {
                     MaterialDialog.DialogOK(stackPane, "Record not be saved.", rootPane);
         }
     }
-
+ 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         if (btnUpdate.getText().equalsIgnoreCase("Edit")) {
@@ -188,15 +222,17 @@ public class BookInfoController implements Initializable {
                     MaterialDialog.DialogOK(stackPane, "Record not be updated.", rootPane);
         }
     }
-
+ 
     private void clearFields() {
         generateBookId();
         txtBookName.setText("");
         txtAuthorName.setText("");
         txtStocks.setText("");
+        txtGenre.setText("");
+        txtTags.setText("");
         txtDescription.setText("");
     }
-
+ 
     // retrive fields data in object
     private boolean retriveFieldsData() {
         if (isEmptyFields()) {
@@ -206,6 +242,9 @@ public class BookInfoController implements Initializable {
             book.setAuthorName(txtAuthorName.getText());
             book.setStock(Integer.parseInt(txtStocks.getText().trim()));
             book.setDescription(txtDescription.getText());
+            // NOVO: gênero e tags (opcionais)
+            book.setGenre(txtGenre.getText() == null ? "" : txtGenre.getText().trim());
+            book.setTags(normalizeTags(txtTags.getText()));
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             book.setDate(java.sql.Date.valueOf((df.format(new Date()))));
         } else{
@@ -222,7 +261,17 @@ public class BookInfoController implements Initializable {
         if (txtDescription.getText().isEmpty()) return false;
         return true;
     }
-
+ 
+    // NOVO: padroniza as tags -> "romance, clássico ,  " vira "romance,clássico"
+    private String normalizeTags(String raw) {
+        if (raw == null) return "";
+        return Arrays.stream(raw.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .distinct()
+                .collect(Collectors.joining(","));
+    }
+ 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         if (btnDelete.getText().equalsIgnoreCase("Cancel")) {
@@ -231,7 +280,7 @@ public class BookInfoController implements Initializable {
             deleteBook(Integer.parseInt(txtBookId.getText()));
         }
     }
-
+ 
     @FXML
     public void menuDeleteOnAction(ActionEvent event) {
         if (table.getSelectionModel().getSelectedItem() != null) {
@@ -244,7 +293,7 @@ public class BookInfoController implements Initializable {
         } else
             MaterialDialog.DialogOK(stackPane, "Please select record(s)", rootPane);
     }
-
+ 
     private void deleteBook(int... id) {
         JFXButton[] btn = MaterialDialog.confirmDialog(stackPane, "Are you sure you wanna delete(s) this record?", rootPane);
         btn[0].addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -259,8 +308,8 @@ public class BookInfoController implements Initializable {
             MaterialDialog.DialogOK(stackPane, "Deletion process cancel.", rootPane);
         });
     }
-
-
+ 
+ 
     @FXML
     public void tableMouseClicked(MouseEvent event) {
         if (!table.getSelectionModel().isEmpty()) {
@@ -268,27 +317,31 @@ public class BookInfoController implements Initializable {
             retriveObjectData();
         }
     }
-
+ 
     // retrive object data in fields
     private void retriveObjectData() {
+        // proteção: se a tabela estiver vazia, não há livro para mostrar
+        if (book == null) return;
         txtBookId.setText(String.valueOf(book.getId()));
         txtBookName.setText(book.getName());
         txtAuthorName.setText(book.getAuthorName());
         txtStocks.setText(String.valueOf(book.getStock()));
+        txtGenre.setText(book.getGenre() == null ? "" : book.getGenre());
+        txtTags.setText(book.getTags() == null ? "" : book.getTags());
         txtDescription.setText(book.getDescription());
     }
-
+ 
     @FXML
     void btnSearchOnAction(ActionEvent event) {
         searchRecord();
     }
-
+ 
     @FXML
     void txtSearchKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER)
             searchRecord();
     }
-
+ 
     private void searchRecord() {
         list.clear();
         list.addAll(bookDAO.getBooksArrayList(txtSearch.getText()));
@@ -299,11 +352,49 @@ public class BookInfoController implements Initializable {
             table.setItems(list);
         }
     }
-
+ 
     @FXML
     void btnRefreshOnAction(ActionEvent event) {
         txtSearch.setText("");
         loadData();
     }
-
+ 
+    // ===================== NOVO: FILTROS =====================
+ 
+    // Recarrega as opções dos combos (autores, gêneros e tags existentes no acervo)
+    private void refreshFilterOptions() {
+        updatingFilters = true;
+        try {
+            cbFilterAuthor.setItems(FXCollections.observableArrayList(bookDAO.getDistinctValues("AUTHOR")));
+            cbFilterGenre.setItems(FXCollections.observableArrayList(bookDAO.getDistinctValues("GENRE")));
+            cbFilterTag.setItems(FXCollections.observableArrayList(bookDAO.getDistinctTags()));
+            cbFilterAuthor.setValue(null);
+            cbFilterGenre.setValue(null);
+            cbFilterTag.setValue(null);
+        } finally {
+            updatingFilters = false;
+        }
+    }
+ 
+    // Chamado sempre que um combo muda: aplica os filtros escolhidos em conjunto
+    @FXML
+    void applyFilters(ActionEvent event) {
+        if (updatingFilters) return;
+        list.clear();
+        list.addAll(bookDAO.filterBooks(cbFilterAuthor.getValue(),
+                cbFilterGenre.getValue(),
+                cbFilterTag.getValue()));
+        table.setItems(list);
+        if (list.isEmpty())
+            MaterialDialog.DialogOK(stackPane, "Not found.", rootPane);
+    }
+ 
+    // Botão "Clear": remove os filtros e mostra todos os livros
+    @FXML
+    void clearFilters(ActionEvent event) {
+        txtSearch.setText("");
+        loadData();
+    }
+ 
 }
+ 

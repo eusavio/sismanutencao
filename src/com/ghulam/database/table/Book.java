@@ -12,6 +12,8 @@ public class Book {
 	private int stock;
 	private Date date;
 	private JFXCheckBox action;
+	private String genre;
+    private String tags;
 
 	public Book() {
 		action = new JFXCheckBox();
@@ -82,4 +84,9 @@ public class Book {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
+    public String getTags() { return tags; }
+    public void setTags(String tags) { this.tags = tags; }
 }
