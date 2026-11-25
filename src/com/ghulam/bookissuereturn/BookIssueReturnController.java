@@ -1,4 +1,5 @@
 package com.ghulam.bookissuereturn;
+
 import com.ghulam.Main;
 import com.ghulam.alert.MaterialDialog;
 import com.ghulam.database.dao.BookDAO;
@@ -24,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -31,63 +33,39 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;        
-import java.util.logging.Logger;       
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BookIssueReturnController implements Initializable {
     
     private static final Logger LOGGER = Logger.getLogger(BookIssueReturnController.class.getName());
 
-    @FXML
-    private Label lblDate;
-    @FXML
-    private JFXButton btnAddBook;
-    @FXML
-    private JFXButton btnAddStudent;
-    @FXML
-    private JFXButton btnRefresh;
-    @FXML
-    private Label lblIssueID;
-    @FXML
-    private Label lblNoOfStudent;
-    @FXML
-    private Label lblNoOfBooks;
-    @FXML
-    private JFXButton btnIssueBook;
-    @FXML
-    private ImageView imgBookIssue;
-    @FXML
-    private JFXComboBox<Integer> txtBookIssueId;
-    @FXML
-    private JFXButton btnReturn;
-    @FXML
-    private ImageView imgRStudent;
-    @FXML
-    private Label lblRStudentId;
-    @FXML
-    private Label lblRStudentName;
-    @FXML
-    private Label lblRRoll;
-    @FXML
-    private Label lblRClass;
-    @FXML
-    private Label lblRMobile;
-    @FXML
-    private ImageView imgRBook;
-    @FXML
-    private Label lblRBookId;
-    @FXML
-    private Label lblRBookName;
-    @FXML
-    private Label lblRBookAuthor;
-    @FXML
-    private ImageView imgRIssue;
-    @FXML
-    private Label lblRIssueDate;
-    @FXML
-    private Label lblRRetrunDate;
-    @FXML
-    private Label lblBookAvailable;
+    @FXML private Label lblDate;
+    @FXML private JFXButton btnAddBook;
+    @FXML private JFXButton btnAddStudent;
+    @FXML private JFXButton btnRefresh;
+    @FXML private Label lblIssueID;
+    @FXML private Label lblNoOfStudent;
+    @FXML private Label lblNoOfBooks;
+    @FXML private JFXButton btnIssueBook;
+    @FXML private ImageView imgBookIssue;
+    @FXML private JFXComboBox<Integer> txtBookIssueId;
+    @FXML private JFXButton btnReturn;
+    @FXML private ImageView imgRStudent;
+    @FXML private Label lblRStudentId;
+    @FXML private Label lblRStudentName;
+    @FXML private Label lblRRoll;
+    @FXML private Label lblRClass;
+    @FXML private Label lblRMobile;
+    @FXML private ImageView imgRBook;
+    @FXML private Label lblRBookId;
+    @FXML private Label lblRBookName;
+    @FXML private Label lblRBookAuthor;
+    @FXML private ImageView imgRIssue;
+    @FXML private Label lblRIssueDate;
+    @FXML private Label lblRRetrunDate;
+    @FXML private Label lblBookAvailable;
+    
     private StackPane stackPane;
     private AnchorPane rootPane;
     private StudentDAO studentDAO;
@@ -129,7 +107,6 @@ public class BookIssueReturnController implements Initializable {
         studentDAO = new StudentDAO();
         bookDAO = new BookDAO();
         bookIssueReturnDAO = new BookIssueReturnDAO();
-        //Add Observable List from Database
         bookObservableList.clear();
         studentObservableList.clear();
         bookObservableList.addAll(bookDAO.getBooksArrayList());
@@ -142,7 +119,6 @@ public class BookIssueReturnController implements Initializable {
         generateIssueId();
     }
 
-    // Issue book coding start here
     private void openDialogSatge(String str){
         try {
             Parent root=FXMLLoader.load(getClass().getResource(str));
@@ -157,27 +133,23 @@ public class BookIssueReturnController implements Initializable {
     }
 
     private void setLblNoOfStudent(){
-        selectedStudentList.clear(); // Clear List
+        selectedStudentList.clear();
         studentObservableList.sort((o1,o2)-> {
-                if(o1.getOnAction().isSelected())
-                    return 0;
+                if(o1.getOnAction().isSelected()) return 0;
                 return 1;
         });
         for(Student student:studentObservableList) {
             if (student.getOnAction().isSelected()) {
                 selectedStudentList.add(student);
-            }
-            else
-                break;
+            } else break;
         }
         lblNoOfStudent.setText("No. of Students : "+selectedStudentList.size());
     }
     
     private void setLblNoOfBooks(){
-        selectedBookList.clear(); // Clear List
+        selectedBookList.clear();
         bookObservableList.sort(((o1, o2) -> {
-            if(o1.getAction().isSelected())
-                return 0;
+            if(o1.getAction().isSelected()) return 0;
             return 1;
         }));
         for(Book book:bookObservableList){
@@ -197,11 +169,8 @@ public class BookIssueReturnController implements Initializable {
                 break;
             }
         }
-        if(available)
-           lblBookAvailable.setText(inStock);
-        else
-           lblBookAvailable.setText(outOfStock);
-
+        if(available) lblBookAvailable.setText(inStock);
+        else lblBookAvailable.setText(outOfStock);
     }
     
     @FXML
@@ -226,7 +195,6 @@ public class BookIssueReturnController implements Initializable {
     void btnIssueBookOnAction(ActionEvent event) {
         int issueId=Integer.parseInt(lblIssueID.getText());
         bookIssueReturn = new BookIssueReturn();
-        // set the date
         bookIssueReturn.setIssueDate(java.sql.Date.valueOf((df1.format(new Date()))));
 
         if(lblBookAvailable.getText().equalsIgnoreCase(inStock)){
@@ -240,8 +208,7 @@ public class BookIssueReturnController implements Initializable {
             }
             MaterialDialog.DialogOK(stackPane,(selectedBookList.size()*selectedStudentList.size())+" Record(s) successfully saved.",rootPane);
             btnRefresh.fire();
-        }
-        else{
+        } else {
             MaterialDialog.DialogOK(stackPane,"Book not available!!! Please try another book",rootPane);
         }
     }
@@ -260,89 +227,96 @@ public class BookIssueReturnController implements Initializable {
         issueBookList.addAll(bookIssueReturnDAO.getBooksIssueIDArrayList());
         txtBookIssueId.setItems(issueBookList);
     }
-    // Issue book coding end here
-
-    //Return Book coding start here
 
     @FXML
     void txtBookIssueIdOnAction(ActionEvent event) {
-
         if (!txtBookIssueId.getSelectionModel().isEmpty()) {
-            bookIssueReturn = bookIssueReturnDAO.getData(txtBookIssueId.getSelectionModel().getSelectedItem());
+            Integer selectedIssueId = txtBookIssueId.getSelectionModel().getSelectedItem();
+            if (selectedIssueId == null) return;
+
+            bookIssueReturn = bookIssueReturnDAO.getData(selectedIssueId);
+            
             if (bookIssueReturn != null) {
                 lblRIssueDate.setText(df.format(bookIssueReturn.getIssueDate()));
                 lblRRetrunDate.setText(df.format(new Date()));
 
-                //retrieve Book Data.
+                
                 book = bookDAO.getBook(bookIssueReturn.getBookId());
+                if (book == null) {
+                    MaterialDialog.DialogOK(stackPane, "Erro: Livro associado não encontrado no acervo.", rootPane);
+                    setVisibleRetrunBook(false);
+                    return;
+                }
                 lblRBookId.setText(String.valueOf(book.getId()));
                 lblRBookName.setText(book.getName());
                 lblRBookAuthor.setText(book.getAuthorName());
-                //retrieve Student Data.
+
+                
                 student = studentDAO.getStudent(bookIssueReturn.getStudentId());
+                if (student == null) {
+                    MaterialDialog.DialogOK(stackPane, "Erro: Estudante associado não encontrado.", rootPane);
+                    setVisibleRetrunBook(false);
+                    return;
+                }
                 lblRStudentId.setText(String.valueOf(student.getStudentID()));
                 lblRStudentName.setText(student.getName());
                 lblRRoll.setText(String.valueOf(student.getRoll()));
                 lblRClass.setText(student.getCls());
                 lblRMobile.setText(String.valueOf(student.getMobile_no()));
+                
                 setVisibleRetrunBook(true);
-            } else
+            } else {
                 MaterialDialog.DialogOK(stackPane, "Data not found.", rootPane);
+                setVisibleRetrunBook(false);
+            }
         }
     }
 
     private void setVisibleRetrunBook(Boolean aFlag) {
-        imgRStudent.setVisible(aFlag);
-        lblRStudentId.setVisible(aFlag);
-        lblRStudentName.setVisible(aFlag);
-        lblRRoll.setVisible(aFlag);
-        lblRClass.setVisible(aFlag);
-        lblRMobile.setVisible(aFlag);
-        imgRBook.setVisible(aFlag);
-        lblRBookId.setVisible(aFlag);
-        lblRBookName.setVisible(aFlag);
-        lblRBookAuthor.setVisible(aFlag);
-        imgRIssue.setVisible(aFlag);
-        lblRIssueDate.setVisible(aFlag);
+        imgRStudent.setVisible(aFlag); lblRStudentId.setVisible(aFlag); lblRStudentName.setVisible(aFlag);
+        lblRRoll.setVisible(aFlag); lblRClass.setVisible(aFlag); lblRMobile.setVisible(aFlag);
+        imgRBook.setVisible(aFlag); lblRBookId.setVisible(aFlag); lblRBookName.setVisible(aFlag);
+        lblRBookAuthor.setVisible(aFlag); imgRIssue.setVisible(aFlag); lblRIssueDate.setVisible(aFlag);
         lblRRetrunDate.setVisible(aFlag);
     }
 
     @FXML
     void btnReturnOnAction(ActionEvent event) {
         if (isEmptyBookReturn()) {
-            if (bookIssueReturnDAO.deleteData(txtBookIssueId.getSelectionModel().getSelectedItem()) > 0) {
+            Integer selectedIssueId = txtBookIssueId.getSelectionModel().getSelectedItem();
+            if (selectedIssueId == null) {
+                MaterialDialog.DialogOK(stackPane, "Por favor, selecione um Issue ID.", rootPane);
+                return;
+            }
+
+            if (bookIssueReturnDAO.deleteData(selectedIssueId) > 0) {
                 MaterialDialog.DialogOK(stackPane, "Book successfully returned.", rootPane);
                 setVisibleRetrunBook(false);
                 clearReturnBookFields();
                 btnRefresh.fire();
-            } else
+            } else {
                 MaterialDialog.DialogOK(stackPane, "Book not be returned.", rootPane);
-        } else
+            }
+        } else {
             MaterialDialog.DialogOK(stackPane, "All fields required.", rootPane);
+        }
     }
 
     private void clearReturnBookFields() {
         txtBookIssueId.getSelectionModel().select(-1);
-        lblRStudentId.setText("");
-        lblRStudentName.setText("");
-        lblRRoll.setText("");
-        lblRClass.setText("");
-        lblRMobile.setText("");
-        lblRBookId.setText("");
-        lblRBookName.setText("");
-        lblRBookAuthor.setText("");
-        lblRIssueDate.setText("");
+        lblRStudentId.setText(""); lblRStudentName.setText(""); lblRRoll.setText("");
+        lblRClass.setText(""); lblRMobile.setText(""); lblRBookId.setText("");
+        lblRBookName.setText(""); lblRBookAuthor.setText(""); lblRIssueDate.setText("");
         lblRRetrunDate.setText("");
     }
 
     private boolean isEmptyBookReturn() {
-        if(txtBookIssueId.getSelectionModel().toString().isEmpty())
+        
+        if (txtBookIssueId.getSelectionModel().getSelectedItem() == null) {
             return false;
-        if(lblRStudentId.getText().trim().isEmpty())
-            return false;
-        if(lblRBookId.getText().trim().isEmpty())
-            return false;
+        }
+        if(lblRStudentId.getText().trim().isEmpty()) return false;
+        if(lblRBookId.getText().trim().isEmpty()) return false;
         return true;
     }
-
 }
