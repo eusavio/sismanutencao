@@ -1,14 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.ghulam.about.AboutController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="522.0" prefWidth="761.0">
+    <children>
+        <!-- Cabeçalho (mesmo padrão do Dashboard) -->
+        <AnchorPane prefHeight="56.0" styleClass="flatAnchorWithEffect1" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="6.0">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="About" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="Segoe UI Bold" size="30.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
 
+        <!-- Cartão branco com borda marrom (classe .aboutCard no Style.css) -->
+        <AnchorPane styleClass="aboutCard" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="76.0">
+            <children>
+                <VBox alignment="TOP_CENTER" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <padding>
+                        <Insets bottom="12.0" left="16.0" right="16.0" top="16.0" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER" spacing="12.0">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@/com/ghulam/images/about_black.png" />
+                                    </image>
+                                </ImageView>
+                                <Label text="About">
+                                    <font>
+                                        <Font name="Segoe UI" size="24.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <Label alignment="CENTER" maxWidth="520.0" text="Applying reverse engineering to revitalize and document a legacy library system, ensuring sustainable evolution and architectural clarity." textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Segoe UI" size="14.0" />
+                            </font>
+                        </Label>
+                        <Label text="Our Process">
+                            <font>
+                                <Font name="Segoe UI Bold" size="15.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="6.0" />
+                            </VBox.margin>
+                        </Label>
+                        <VBox maxWidth="520.0" spacing="4.0">
+                            <children>
+                                <Label text="•  Agile Management (Scrum): Sprint cadence, backlog grooming, and continuous team alignment." wrapText="true">
+                                    <font>
+                                        <Font name="Segoe UI" size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label text="•  Architecture &amp; Static Analysis: Deep source code inspection, trigger logic extraction, and physical data modeling." wrapText="true">
+                                    <font>
+                                        <Font name="Segoe UI" size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label text="•  Documentation &amp; Traceability: Reverse-engineered class and use case diagrams mapped across functional and non-functional requirements." wrapText="true">
+                                    <font>
+                                        <Font name="Segoe UI" size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label text="•  Redesign &amp; Accessibility: Comprehensive UI revamp in Figma to resolve critical usability and accessibility flaws." wrapText="true">
+                                    <font>
+                                        <Font name="Segoe UI" size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <Label text="Meet the Team">
+                            <font>
+                                <Font name="Segoe UI Bold" size="15.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="6.0" />
+                            </VBox.margin>
+                        </Label>
+                        <HBox alignment="TOP_CENTER" spacing="48.0">
+                            <children>
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label text="•  Tainá">
+                                            <font>
+                                                <Font name="Segoe UI" size="13.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="•  Giselle">
+                                            <font>
+                                                <Font name="Segoe UI" size="13.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="•  Ruan">
+                                            <font>
+                                                <Font name="Segoe UI" size="13.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label text="•  Vanessa">
+                                            <font>
+                                                <Font name="Segoe UI" size="13.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="•  Sávio">
+                                            <font>
+                                                <Font name="Segoe UI" size="13.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="•  Ayslan">
+                                            <font>
+                                                <Font name="Segoe UI" size="13.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <Label text="Revitalizing the past, building the future of software.">
+                            <font>
+                                <Font name="Segoe UI Italic" size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="8.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </children>
 </AnchorPane>

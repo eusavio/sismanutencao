@@ -261,6 +261,16 @@
   -fx-background-color: #4a3123;
 }
 
+/* About: cartão branco com borda marrom e texto escuro (contraste alto) */
+.aboutCard {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #4a3123;
+  -fx-border-width: 2px;
+}
+.aboutCard .label {
+  -fx-text-fill: #2b1b12;
+}
+
 /* table view Style codding start here*/
 .tabledialog-button-view {
   -fx-background-color: transparent;
