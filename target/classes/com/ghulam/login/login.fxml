@@ -3,10 +3,13 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <StackPane fx:id="stackPane" styleClass="roundPane" stylesheets="@../style/Style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ghulam.login.LoginController">
    <children>
@@ -16,13 +19,24 @@
                <image>
                   <Image url="@../images/login.png" />
                </image>
+               <!-- Escurece o fundo para garantir contraste do texto branco. Remova se a imagem já estiver escura o bastante. -->
+               <effect>
+                  <ColorAdjust brightness="-0.2" />
+               </effect>
             </ImageView>
-            <AnchorPane layoutX="339.0" layoutY="51.0" prefHeight="224.0" prefWidth="233.0" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="339.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="51.0">
+            <!-- Título centralizado (como na referência). Era parte da arte do fundo. -->
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="24.0" prefHeight="50.0" prefWidth="630.0" text="Library Management System" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="26.0" />
+               </font>
+            </Label>
+            <!-- Formulário centralizado: 206 + 233 + 193 = 632 -->
+            <AnchorPane layoutX="206.0" layoutY="78.0" prefHeight="209.0" prefWidth="233.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="78.0">
                <children>
                   <JFXTextField fx:id="txtUsername" labelFloat="true" layoutY="22.0" prefHeight="26.0" prefWidth="226.0" promptText="Username" />
                   <JFXPasswordField fx:id="txtPassword" labelFloat="true" layoutY="93.0" prefHeight="26.0" prefWidth="226.0" promptText="Password" />
-                  <JFXButton fx:id="btnLogin" defaultButton="true" layoutX="14.0" layoutY="164.0" onAction="#btnLoginClick" prefHeight="39.0" prefWidth="104.0" styleClass="loginButton" text="Login" />
-                  <JFXButton fx:id="btnCancel" cancelButton="true" layoutX="129.0" layoutY="164.0" onAction="#btnCancelClick" prefHeight="39.0" prefWidth="104.0" styleClass="loginButton" text="Cancel" />
+                  <JFXButton fx:id="btnLogin" defaultButton="true" layoutX="0.0" layoutY="150.0" onAction="#btnLoginClick" prefHeight="39.0" prefWidth="104.0" styleClass="loginButton" text="Login" />
+                  <JFXButton fx:id="btnCancel" cancelButton="true" layoutX="122.0" layoutY="150.0" onAction="#btnCancelClick" prefHeight="39.0" prefWidth="104.0" styleClass="loginButton" text="Cancel" />
                </children>
             </AnchorPane>
          </children>

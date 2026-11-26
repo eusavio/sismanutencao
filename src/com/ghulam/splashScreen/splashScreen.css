@@ -1,5 +1,7 @@
 #ROOTNODE {
-    -fx-background-image: url("../images/splashScreen.png");
+    /* Fundo em gradiente marrom (substitui splashScreen.png roxo/rosa).
+       Texto branco sobre este gradiente tem contraste acima de 7:1. */
+    -fx-background-color: linear-gradient(to bottom right, #3b2519, #6f4e3c);
     -fx-background-radius: 26;
     -fx-border-radius:26px;
     -fx-border-color:TRANSPARENT ;
