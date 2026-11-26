@@ -271,6 +271,38 @@
   -fx-text-fill: #2b1b12;
 }
 
+/* Settings: faixa de título, caixa marrom e seletores brancos com texto escuro.
+   Fica depois das regras .combo-box-base / .list-cell para prevalecer sobre elas. */
+.settingTitle {
+  -fx-background-color: #8a5a40;
+  -fx-text-fill: white;
+  -fx-font-family: "Segoe UI";
+  -fx-font-size: 26px;
+  -fx-font-weight: bold;
+}
+.settingBody {
+  -fx-background-color: #4a3123;
+}
+.settingBody .label {
+  -fx-text-fill: white;
+}
+.settingCombo {
+  -fx-background-color: #ffffff;
+  -fx-font-family: "Segoe UI";
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -jfx-focus-color: #2b1b12;
+  -jfx-unfocus-color: #2b1b12;
+  -fx-effect: dropshadow(GAUSSIAN, rgba(0, 0, 0, 0.26), 8, 0.16, 0, 2);
+}
+.settingCombo .list-cell {
+  -fx-background-color: transparent;
+  -fx-text-fill: #2b1b12;
+}
+.settingCombo .arrow {
+  -fx-background-color: #2b1b12;
+}
+
 /* table view Style codding start here*/
 .tabledialog-button-view {
   -fx-background-color: transparent;
