@@ -20,7 +20,7 @@
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="56.0" prefWidth="664.0" text="DASHBOARD" textFill="WHITE" underline="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <font>
-                              <Font name="Elephant" size="33.0" />
+                              <Font name="Segoe UI Bold" size="33.0" />
                            </font>
                         </Label>
                         <JFXButton contentDisplay="CENTER" layoutX="649.0" layoutY="6.0" maxHeight="36.0" maxWidth="36.0" minHeight="36.0" minWidth="36.0" prefHeight="36.0" prefWidth="36.0" styleClass="searchButton" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
@@ -48,7 +48,7 @@
                                  <children>
                                     <Label fx:id="lblBook" text="View All Books" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                        <font>
-                                          <Font name="Georgia" size="18.0" />
+                                          <Font name="Segoe UI Bold" size="18.0" />
                                        </font>
                                     </Label>
                                  </children></AnchorPane>
@@ -63,7 +63,7 @@
                                  <children>
                                     <Label fx:id="lblIssue" text="View Issue Books" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                        <font>
-                                          <Font name="Georgia" size="18.0" />
+                                          <Font name="Segoe UI Bold" size="18.0" />
                                        </font>
                                     </Label>
                                  </children></AnchorPane>
@@ -78,7 +78,7 @@
                                  <children>
                                     <Label fx:id="lblReturn" text="View Return Books" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                        <font>
-                                          <Font name="Georgia" size="18.0" />
+                                          <Font name="Segoe UI Bold" size="18.0" />
                                        </font>
                                     </Label>
                                  </children></AnchorPane>

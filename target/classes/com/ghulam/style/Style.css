@@ -1,14 +1,29 @@
+/* ==========================================================
+   CR-02: Redesign de Acessibilidade e Tipografia
+   Paleta (contraste calculado contra branco / marrom escuro):
+     Marrom escuro (barra lateral, cabeçalhos) .... #4a3123
+     Marrom médio (hover) ......................... #6f4e3c
+     Marrom ativo (item selecionado) .............. #7a5646
+     Terracota (cards / botões de destaque) ....... #8a5a40
+     Bege claro (seleção em tabela) ............... #d7b9a5
+     Texto escuro (áreas claras) .................. #2b1b12
+     Vermelho de ação (Add/Edit/Delete) ........... #d81b45
+   ========================================================== */
+
 * {
-  -fx-primary: #ededed;
-  -fx-secondary: #8e24aa;
-  -fx-secondary-hover: #e0e0e0;
+  -fx-primary: #ffffff;
+  -fx-secondary: #4a3123;
+  -fx-secondary-hover: #6f4e3c;
   -fx-primary-text: white;
   -fx-green: #76ff03;
-  -fx-yellow: #ffff00;
+  -fx-yellow: #ffd54f;
 }
 
 .root {
-  -fx-background-color: #ededed;
+  -fx-background-color: #ffffff;
+  /* Tipografia moderna (substitui Elephant / Georgia). */
+  -fx-font-family: "Segoe UI";
+  -fx-font-size: 14px;
 }
 
 .roundPane {
@@ -18,7 +33,9 @@
 }
 .button {
   -fx-text-fill: -fx-primary-text;
+  -fx-font-family: "Segoe UI";
   -fx-font-size: 14px;
+  -fx-font-weight: bold;
 }
 
 .button:hover {
@@ -26,44 +43,49 @@
 }
 /* Login css styling start here */
 .loginButton {
-  -fx-border-color: #8e24aa;
+  -fx-border-color: #ffffff;
   -fx-border-radius: 20px;
   -fx-background-radius: 20px;
+  -fx-text-fill: white;
 }
 
 .loginButton:hover {
-  -fx-border-color: #ffff00;
+  -fx-border-color: #ffd54f;
   -fx-border-radius: 20px;
   -fx-background-radius: 20px;
 }
 .text-field {
   -fx-text-fill: white;
-  -fx-prompt-text-fill: WHITE;
+  -fx-prompt-text-fill: #f1e6df;
   -jfx-focus-color: -fx-green;
   -jfx-unfocus-color: White;
+  -fx-font-family: "Segoe UI";
+  -fx-font-size: 15px;
 }
 .text-area {
   -fx-text-fill: white;
-  -fx-prompt-text-fill: WHITE;
+  -fx-prompt-text-fill: #f1e6df;
   -jfx-focus-color: -fx-green;
   -jfx-unfocus-color: White;
+  -fx-font-family: "Segoe UI";
   -fx-font-size: 15px;
 }
 .combo-box {
   -fx-text-fill: white;
-  -fx-prompt-text-fill: WHITE;
+  -fx-prompt-text-fill: #f1e6df;
   -jfx-focus-color: -fx-green;
   -jfx-unfocus-color: White;
+  -fx-font-family: "Segoe UI";
   -fx-font-size: 15px;
 }
 
 .combo-box-base,
 .list-cell {
-  -fx-background-color: #8e24aa;
+  -fx-background-color: #4a3123;
   -fx-text-fill: white;
 }
 .list-cell:hover {
-  -fx-background-color: #1565c0;
+  -fx-background-color: #8a5a40;
   -fx-text-fill: white;
 }
 
@@ -82,30 +104,52 @@
   code see in MenuController Class.
 */
 .menuPane {
-  -fx-background-color: WHITE;
+  -fx-background-color: #4a3123;
   -fx-effect: dropshadow(GAUSSIAN, rgba(0, 0, 0, 0.26), 30, 0.3, 0, 10);
 }
+/* Título "Library Management System" e qualquer label dentro da barra lateral escura */
+.menuPane .label {
+  -fx-text-fill: #ffffff;
+  -fx-font-family: "Segoe UI";
+  -fx-font-weight: bold;
+}
+/* Ícones vetoriais (SVGPath / glifos) dentro dos botões do menu.
+   Não afeta ícones PNG (ImageView), que precisam de versão clara do arquivo. */
+.menuButton .svg-path,
+.menuButtonHover .svg-path,
+.menuButtonActive .svg-path,
+.menuButton .glyph-icon,
+.menuButtonHover .glyph-icon,
+.menuButtonActive .glyph-icon {
+  -fx-fill: #ffffff;
+}
 .menuButton {
-  -fx-background-color: WHITE;
-  -fx-text-fill: #757575;
+  -fx-background-color: #4a3123;
+  -fx-text-fill: #ffffff;
+  -fx-font-family: "Segoe UI";
   -fx-font-size: 16px;
+  -fx-font-weight: bold;
   -fx-border-radius: 4px;
   -fx-background-radius: 4px;
   -fx-effect: dropshadow(GAUSSIAN, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
 }
 .menuButtonHover {
-  -fx-background-color: #d6d6d6;
-  -fx-text-fill: #757575;
+  -fx-background-color: #6f4e3c;
+  -fx-text-fill: #ffffff;
+  -fx-font-family: "Segoe UI";
   -fx-font-size: 16px;
+  -fx-font-weight: bold;
   -fx-cursor: pointer;
   -fx-border-radius: 4px;
   -fx-background-radius: 4px;
   -fx-effect: dropshadow(GAUSSIAN, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
 }
 .menuButtonActive {
-  -fx-background-color: RED;
-  -fx-text-fill: white;
+  -fx-background-color: #7a5646;
+  -fx-text-fill: #ffffff;
+  -fx-font-family: "Segoe UI";
   -fx-font-size: 16px;
+  -fx-font-weight: bold;
   -fx-cursor: pointer;
   -fx-border-radius: 4px;
   -fx-background-radius: 4px;
@@ -138,39 +182,42 @@
   -fx-effect: dropshadow(GAUSSIAN, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
 }
 
+/* Botões de ação (Add New / Edit / Delete) */
 .allButtons {
-  -fx-background-color: #42a5f5;
+  -fx-background-color: #d81b45;
   -fx-border-radius: 20px;
   -fx-background-radius: 20px;
-  -fx-border-color: #42a5f5;
+  -fx-border-color: #d81b45;
   -fx-text-fill: white;
+  -fx-font-family: "Segoe UI";
   -fx-font-size: 14px;
+  -fx-font-weight: bold;
   -fx-pref-height: 26;
   -fx-max-height: 26px;
   -fx-min-width: 64px;
   -fx-padding: 8px;
 }
 .allButtons:hover {
-  -fx-background-color: #1565c0;
+  -fx-background-color: #a8123a;
   -fx-border-radius: 20px;
   -fx-background-radius: 20px;
-  -fx-border-color: #1565c0;
+  -fx-border-color: #a8123a;
   -fx-text-fill: white;
 }
 
 .flatAnchor {
-  -fx-background-color: #8e24aa;
+  -fx-background-color: #4a3123;
   -fx-border-radius: 16px;
   -fx-background-radius: 16px;
 }
 .flatAnchorWithEffect {
-  -fx-background-color: #00b9ff;
+  -fx-background-color: #8a5a40;
   -fx-border-radius: 16px;
   -fx-background-radius: 16px;
   -fx-effect: dropshadow(GAUSSIAN, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
 }
 .roundAnchor {
-  -fx-background-color: #00b9ff;
+  -fx-background-color: #8a5a40;
   -fx-background-size: 66px;
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
@@ -186,7 +233,7 @@
 }
 
 .flatAnchorWithEffect1 {
-  -fx-background-color: #8e24aa;
+  -fx-background-color: #4a3123;
   -fx-border-radius: 16px;
   -fx-background-radius: 16px;
   -fx-effect: dropshadow(GAUSSIAN, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
@@ -211,46 +258,62 @@
   -fx-spacing: 0.25em; /* 3 */
   -fx-alignment: CENTER;
   -fx-fill-height: false;
-  -fx-background-color: red;
+  -fx-background-color: #4a3123;
 }
 
 /* table view Style codding start here*/
 .tabledialog-button-view {
   -fx-background-color: transparent;
-  -fx-border-color: WHITE;
+  -fx-border-color: #4a3123;
+}
+
+.table-view {
+  -fx-background-color: #ffffff;
 }
 
 .table-view:focused {
-  -fx-background-color: transparent;
-  -fx-border-color: WHITE;
+  -fx-background-color: #ffffff;
+  -fx-border-color: #4a3123;
 }
 
 .table-view .column-header-background {
-  -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+  -fx-background-color: #553b2e;
 }
 
 .table-view .column-header-background .label {
   -fx-background-color: transparent;
   -fx-text-fill: white;
+  -fx-font-family: "Segoe UI";
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
 }
 
 .table-view .column-header {
   -fx-background-color: transparent;
 }
 
+/* Células em fundo claro => texto escuro */
 .table-view .table-cell {
-  -fx-text-fill: white;
+  -fx-text-fill: #2b1b12;
+  -fx-font-family: "Segoe UI";
+  -fx-font-size: 14px;
 }
 
 .table-row-cell {
-  -fx-background-color: -fx-table-cell-border-color, #8e24aa;
+  -fx-background-color: -fx-table-cell-border-color, #ffffff;
   -fx-background-insets:
-    0,
-    0 0 1 0;
+          0,
+          0 0 1 0;
   -fx-padding: 0em; /* 0 */
 }
+.table-row-cell:hover {
+  -fx-background-color: -fx-table-cell-border-color, #f3e9e2;
+}
 .table-row-cell:selected {
-  -fx-background-color: grey;
+  -fx-background-color: -fx-table-cell-border-color, #d7b9a5;
+}
+.table-row-cell:selected .table-cell {
+  -fx-text-fill: #2b1b12;
 }
 
 .jfx-date-picker {
@@ -260,24 +323,33 @@
 
 /* Tab Style codding end here*/
 .tab {
-  -fx-background-color: #8e24aa;
+  -fx-background-color: #4a3123;
   -fx-pref-width: 356px;
   -fx-pref-height: 56px;
   -fx-background-radius:
-    16px 16px 16px 16px,
-    0 0 0 0,
-    0 0 0 0;
+          16px 16px 16px 16px,
+          0 0 0 0,
+          0 0 0 0;
   -fx-border-radius: 16px 16px 16px 16px;
+}
+.tab:selected {
+  -fx-background-color: #8a5a40;
+}
+.tab .tab-label {
+  -fx-text-fill: white;
+  -fx-font-family: "Segoe UI";
+  -fx-font-size: 15px;
+  -fx-font-weight: bold;
 }
 .tab:hover {
   -fx-cursor: hand;
 }
 .tab-header-background {
-  -fx-background-color: #8e24aa;
+  -fx-background-color: #4a3123;
   -fx-background-radius:
-    16px 16px 0 0,
-    0 0 0 0,
-    0 0 0 0;
+          16px 16px 0 0,
+          0 0 0 0,
+          0 0 0 0;
   -fx-border-radius: 16px 16px 0 0;
 }
 /* Tab Style codding end here*/

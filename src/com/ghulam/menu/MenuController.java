@@ -139,9 +139,9 @@ public class MenuController implements Initializable {
 		if (event.getSource() != activeMenuButton) {
 			ft = new JFXFillTransition();
 			ft.setRegion((JFXButton) event.getSource());
-			ft.setDuration(new Duration(500));
-			ft.setFromValue(Color.WHITE);
-			ft.setToValue(Color.rgb(214, 214, 214));
+			ft.setDuration(new Duration(250));
+			ft.setFromValue(Color.web("#4a3123"));
+			ft.setToValue(Color.web("#6f4e3c"));
 			ft.play();
 		}
 	}
@@ -151,9 +151,9 @@ public class MenuController implements Initializable {
 		if (event.getSource() != activeMenuButton) {
 			ft = new JFXFillTransition();
 			ft.setRegion((JFXButton) event.getSource());
-			ft.setDuration(new Duration(500));
-			ft.setFromValue(Color.rgb(214, 214, 214));
-			ft.setToValue(Color.WHITE);
+			ft.setDuration(new Duration(250));
+			ft.setFromValue(Color.web("#6f4e3c"));
+			ft.setToValue(Color.web("#4a3123"));
 			ft.play();
 		}
 	}
